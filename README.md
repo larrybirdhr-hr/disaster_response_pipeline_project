@@ -39,7 +39,7 @@ https://github.com/larrybirdhr-hr/disaster_response_pipeline_project
 The overview of the messages dataset is 
 https://github.com/larrybirdhr-hr/disaster_response_pipeline_project/blob/master/Disasters.pdf
 
-### Referrence:
+### Acknowledgement:
 The web display and word processing piece in the run.py file are consulted from another github repo
 https://github.com/canaveensetia/udacity-disaster-response-pipeline.git
 
