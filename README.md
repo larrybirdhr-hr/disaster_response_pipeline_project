@@ -35,4 +35,7 @@ https://github.com/canaveensetia/udacity-disaster-response-pipeline.git
 
 3. Go to http://0.0.0.0:3001/
 
+### Examples:
+The overview of the messages dataset is 
+https://github.com/larrybirdhr-hr/disaster_response_pipeline_project/blob/master/Disasters.pdf
 
