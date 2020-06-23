@@ -1,9 +1,14 @@
+
 import json
 import plotly
 import pandas as pd
 
 from nltk.stem import WordNetLemmatizer
-from nltk.tokenize import word_tokenize
+from nltk.tokenize import word_tokenize, sent_tokenize
+from nltk import pos_tag, word_tokenize
+import nltk
+
+from sklearn.base import BaseEstimator, TransformerMixin
 
 from flask import Flask
 from flask import render_template, request, jsonify
@@ -13,6 +18,24 @@ from sqlalchemy import create_engine
 
 
 app = Flask(__name__)
+
+class StartingVerbExtractor(BaseEstimator, TransformerMixin):
+
+    def starting_verb(self, text):
+        sentence_list = nltk.sent_tokenize(text)
+        for sentence in sentence_list:
+            pos_tags = nltk.pos_tag(tokenize(sentence))
+            first_word, first_tag = pos_tags[0]
+            if first_tag in ['VB', 'VBP'] or first_word == 'RT':
+                return True
+        return False
+
+    def fit(self, X, y=None):
+        return self
+
+    def transform(self, X):
+        X_tagged = pd.Series(X).apply(self.starting_verb)
+        return pd.DataFrame(X_tagged)
 
 def tokenize(text):
     tokens = word_tokenize(text)
@@ -43,9 +66,18 @@ def index():
     genre_counts = df.groupby('genre').count()['message']
     genre_names = list(genre_counts.index)
 
+    category_names = df.iloc[:,4:].columns
+    category_counts = (df.iloc[:,4:] != 0).sum().values
+
+    categories = df.iloc[:, 4:]
+    categories_number = categories.mean().sort_values(ascending = False)[1:6]
+    categories_names  = list(categories_number.index)
+
+
     # create visuals
     # TODO: Below is an example - modify to create your own visuals
     graphs = [
+            # GRAPH 1 - genre graph
         {
             'data': [
                 Bar(
@@ -63,6 +95,44 @@ def index():
                     'title': "Genre"
                 }
             }
+        },
+            # GRAPH 2 - category graph
+        {
+            'data': [
+                Bar(
+                    x=category_names,
+                    y=category_counts
+                )
+            ],
+
+            'layout': {
+                'title': 'Distribution of Message Categories',
+                'yaxis': {
+                    'title': "Count"
+                },
+                'xaxis': {
+                    'title': "Category",
+                    'tickangle': 35
+                }
+            }
+        },
+        {
+            'data': [
+                Bar(
+                    x=categories_names,
+                    y=categories_number
+                )
+            ],
+
+            'layout': {
+                'title': 'Top 5 Message Categories',
+                'yaxis': {
+                    'title': "Percentage"
+                },
+                'xaxis': {
+                    'title': "Categories"
+                }
+            }
         }
     ]
 
@@ -72,6 +142,7 @@ def index():
 
     # render web page with plotly graphs
     return render_template('master.html', ids=ids, graphJSON=graphJSON)
+
 
 
 # web page that handles user query and displays model results
