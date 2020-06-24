@@ -4,7 +4,7 @@ This is the second project toward Udacity Data Science Nanodegree Program. The d
 
 ## Repository
 
-https://github.com/canaveensetia/udacity-disaster-response-pipeline.git
+https://github.com/larrybirdhr-hr/disaster_response_pipeline_project
 
 ## File Description
 
@@ -38,4 +38,8 @@ https://github.com/canaveensetia/udacity-disaster-response-pipeline.git
 ### Examples:
 The overview of the messages dataset is 
 https://github.com/larrybirdhr-hr/disaster_response_pipeline_project/blob/master/Disasters.pdf
+
+### Acknowledgement:
+The web display and word processing piece in the run.py file are consulted from another github repo
+https://github.com/canaveensetia/udacity-disaster-response-pipeline.git
 
