@@ -60,7 +60,7 @@ def save_data(df, database_filename):
     
     '''
     engine = create_engine('sqlite:///' + database_filename)
-    df.to_sql('FigureEight', engine, index=False)    
+    df.to_sql('Data', engine, index=False)    
     
 
 

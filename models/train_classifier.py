@@ -27,7 +27,7 @@ def load_data(database_filepath):
         category_names: Categorical name for labeling.
     '''
     engine = create_engine('sqlite:///'+ database_filepath)
-    df = pd.read_sql_table('FigureEight', engine)
+    df = pd.read_sql_table('Data', engine)
     X = df.message.values
     Y = df[df.columns[4:]].values
     category_names = list(df.columns[4:])
